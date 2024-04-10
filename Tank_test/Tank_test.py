@@ -1,3 +1,4 @@
+from hmac import new
 import turtle
 import random
 import math
@@ -44,6 +45,11 @@ def handle_click(x, y):
  
 # Function to draw the grid and obstacles
 def draw_grid():
+    global grid_visible
+    grid_visible = not grid_visible  
+    if not grid_visible:
+        turtle.clear()
+        return    
     turtle.clear()
     for row in range(grid.size):
         for col in range(grid.size):
@@ -54,8 +60,20 @@ def draw_grid():
             else:
                 draw_empty_square(x, y, cell_size)
     turtle.update()
- 
-# Function to draw an obstacle at a given coordinate
+    
+grid_visible=True        
+
+def add_square():
+    new_size = grid.size + 1
+    if new_size <= 50:  # Limit the grid size to prevent excessive expansion
+        grid.size = new_size
+        draw_grid()
+
+def sub_squares():
+    if grid.size > 2:
+        grid.size= grid.size -1 
+        draw_grid()
+
 def draw_obstacle(x, y, size):
     turtle.goto(x + size // 2, y + size // 2)
     turtle.pendown()
@@ -349,8 +367,14 @@ turtle.onkeypress(right, "Right")
 turtle.onkeyrelease(right,"Right")
 
 
- 
+
 draw_grid()
+turtle.onkeypress(draw_grid, "g")
+turtle.listen()
+turtle.onkeypress(add_square, "+")
+turtle.listen()
+turtle.onkeypress(sub_squares, "-")
+turtle.listen()
 draw_tank(tank)
 
 update_enemy_movement()
