@@ -45,8 +45,6 @@ def handle_click(x, y):
 # Function to draw the grid and obstacles
 def draw_grid():
     turtle.clear()
-    turtle.penup()
-    turtle.speed(0)
     for row in range(grid.size):
         for col in range(grid.size):
             x = col * cell_size
