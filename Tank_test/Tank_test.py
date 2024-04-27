@@ -1,4 +1,6 @@
 from hmac import new
+import pickle
+import os
 import turtle
 import random
 import math
@@ -26,10 +28,22 @@ class Grid:
                 del self.obstacles[(row, col)]  # Removes any obstacle if they are already present.
             else:
                 self.obstacles[(row, col)] = True  # Adds obstacle if it is empty.
+                
  
     #Defines a method to check whether or not there is an obstacle at the specified coordinate. Returns True/False.
     def is_obstacle(self, row, col):
         return (0 <= row < self.size) and (0 <= col < self.size) and ((row, col) in self.obstacles)
+    
+
+    def save_obstacles(self, filename='obstacles.pkl'): #saves the config file for obstacles
+        with open(filename, 'wb') as file:
+            pickle.dump(self.obstacles, file)
+
+    def load_obstacles(self, filename='obstacles.pkl'): #loads config file feor obstacles
+        if not os.path.exists(filename):
+            return {}  # Return an empty dictionary if file doesn't exist
+        with open(filename, 'rb') as file:
+            self.obstacles = pickle.load(file)
  
 # Function to convert the existing screen coordinates into grid coordinates
 def screen_to_grid(x, y, cell_size):
